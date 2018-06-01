@@ -107,7 +107,7 @@ public class PickImageDialog extends PickImageBaseDialog {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == IntentResolver.REQUESTER) {
+        if (requestCode == IntentResolver.REQUESTER || requestCode == IntentResolver.REQUESTER_CAMERA ) {
             boolean granted = true;
 
             for (Integer i : grantResults)
@@ -124,10 +124,10 @@ public class PickImageDialog extends PickImageBaseDialog {
                         }
                     }
 
-                    if (cameraIndex != -1) {
-                        launchGallery();
-                    } else {
+                    if (requestCode == IntentResolver.REQUESTER_CAMERA) {
                         launchCamera();
+                    } else {
+                        launchGallery();
                     }
                 }
             } else {

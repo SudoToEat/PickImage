@@ -37,6 +37,7 @@ import java.util.List;
 public class IntentResolver {
 
     public static final int REQUESTER = 99;
+    public static final int REQUESTER_CAMERA = 98;
     public static final String SAVE_FILE_PATH_TAG = "savePath";
 
     private Activity activity;
@@ -217,7 +218,17 @@ public class IntentResolver {
     }
 
     public boolean requestCameraPermissions(Fragment listener) {
-        return requestPermissions(listener, getAllPermissionsNeeded());
+        List<String> list = new ArrayList<>();
+
+        for (String permission : getAllPermissionsNeeded())
+            if (ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_DENIED)
+                list.add(permission);
+
+        if (list.isEmpty())
+            return true;
+
+        listener.requestPermissions(list.toArray(new String[list.size()]), REQUESTER_CAMERA);
+        return false;
     }
 
     public boolean requestGalleryPermissions(Fragment listener) {
